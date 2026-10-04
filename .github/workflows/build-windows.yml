@@ -31,30 +31,51 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: tiny
+          - name: hebrew-tiny
             model: ggml-tiny-q5_1.bin
+            language: he
             size: "200000000"
             bundle_model: "1"
-          - name: base
+          - name: hebrew-base
             model: ggml-base-q5_1.bin
+            language: he
             size: "300000000"
             bundle_model: "1"
-          - name: small
+          - name: hebrew-small
             model: ggml-small-q5_1.bin
+            language: he
             size: "500000000"
             bundle_model: "1"
-          - name: medium
+          - name: hebrew-medium
             model: ggml-medium-q5_0.bin
+            language: he
+            size: "539000000"
+            bundle_model: "1"
+          - name: english-tiny
+            model: ggml-tiny.en-q5_1.bin
+            language: en
+            size: "200000000"
+            bundle_model: "1"
+          - name: english-base
+            model: ggml-base.en-q5_1.bin
+            language: en
+            size: "300000000"
+            bundle_model: "1"
+          - name: english-small
+            model: ggml-small.en-q5_1.bin
+            language: en
+            size: "500000000"
+            bundle_model: "1"
+          - name: english-medium
+            model: ggml-medium.en-q5_0.bin
+            language: en
             size: "539000000"
             bundle_model: "1"
           - name: nomodel
             model: ggml-medium-q5_0.bin
+            language: he
             size: "539000000"
             bundle_model: "0"
-          - name: english-model
-            model: ggml-medium.en-q5_0.bin
-            size: "539000000"
-            bundle_model: "1"
     runs-on: windows-latest
     timeout-minutes: 90
     steps:
@@ -71,6 +92,7 @@ jobs:
         env:
           CHORDS_MODEL: ${{ matrix.model }}
           CHORDS_MODEL_SIZE: ${{ matrix.size }}
+          CHORDS_UI_LANG: ${{ matrix.language }}
           CHORDS_BUNDLE_MODEL: ${{ matrix.bundle_model }}
         run: python scripts/setup_vendor.py
       - name: Generate Windows icon
@@ -95,6 +117,7 @@ jobs:
       - name: Build EXE
         env:
           CHORDS_MODEL: ${{ matrix.model }}
+          CHORDS_UI_LANG: ${{ matrix.language }}
           CHORDS_BUNDLE_MODEL: ${{ matrix.bundle_model }}
         run: python build_tools/build_exe.py
       - name: Verify PyInstaller output
@@ -157,36 +180,11 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Build Universal Installer
-        if: matrix.name == 'nomodel'
-        shell: pwsh
-        env:
-          CHORDS_INSTALLER_EXE: Chords-nomodel.exe
-          CHORDS_INSTALLER_TARGET_EXE: Chords-nomodel.exe
-          CHORDS_INSTALLER_VARIANT: nomodel
-          CHORDS_INSTALLER_OUTPUT: ChordsEngine-Universal-Installer
-          CHORDS_INSTALLER_MODE: full
-          CHORDS_APP_VERSION: "0.2.0"
-        run: |
-          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-          & $iscc "installer\ChordsEngine.iss"
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          if (-not (Test-Path "release\ChordsEngine-Universal-Installer.exe")) { throw "Universal installer was not created" }
-
-      - name: Upload Universal Installer
-        if: matrix.name == 'nomodel'
-        uses: actions/upload-artifact@v4
-        with:
-          name: Chords-Windows-Universal-Installer
-          path: release/ChordsEngine-Universal-Installer.exe
-          if-no-files-found: error
-          retention-days: 14
-
-
       - name: Build lightweight Update EXE
         shell: pwsh
         env:
           CHORDS_MODEL: ${{ matrix.model }}
+          CHORDS_UI_LANG: ${{ matrix.language }}
           CHORDS_BUNDLE_MODEL: "0"
         run: |
           python build_tools/build_exe.py --skip-pyi
@@ -237,21 +235,49 @@ jobs:
       - name: Download Tiny
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-tiny
+          name: Chords-Windows-hebrew-tiny
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Base
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-base
+          name: Chords-Windows-hebrew-base
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Small
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-small
+          name: Chords-Windows-hebrew-small
+          path: release
+          run-id: ${{ inputs.release_from_run_id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Download English Tiny
+        uses: actions/download-artifact@v4
+        with:
+          name: Chords-Windows-english-tiny
+          path: release
+          run-id: ${{ inputs.release_from_run_id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Download English Base
+        uses: actions/download-artifact@v4
+        with:
+          name: Chords-Windows-english-base
+          path: release
+          run-id: ${{ inputs.release_from_run_id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Download English Small
+        uses: actions/download-artifact@v4
+        with:
+          name: Chords-Windows-english-small
+          path: release
+          run-id: ${{ inputs.release_from_run_id || github.run_id }}
+          github-token: ${{ github.token }}
+      - name: Download English Medium
+        uses: actions/download-artifact@v4
+        with:
+          name: Chords-Windows-english-medium
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
@@ -265,49 +291,49 @@ jobs:
       - name: Download English Model
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-english-model
+          name: Chords-Windows-english-medium
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Medium
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-medium
+          name: Chords-Windows-hebrew-medium
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Tiny Installer
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-tiny-Installer
+          name: Chords-Windows-hebrew-tiny-Installer
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Base Installer
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-base-Installer
+          name: Chords-Windows-hebrew-base-Installer
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Small Installer
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-small-Installer
+          name: Chords-Windows-hebrew-small-Installer
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download English Model Installer
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-english-model-Installer
+          name: Chords-Windows-english-medium-Installer
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
       - name: Download Medium Installer
         uses: actions/download-artifact@v4
         with:
-          name: Chords-Windows-medium-Installer
+          name: Chords-Windows-hebrew-medium-Installer
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
@@ -315,55 +341,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: Chords-Windows-nomodel-Installer
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download Universal Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-Universal-Installer
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download Tiny Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-tiny-Update
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download Base Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-base-Update
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download Small Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-small-Update
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download Medium Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-medium-Update
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download English Model Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-english-model-Update
-          path: release
-          run-id: ${{ inputs.release_from_run_id || github.run_id }}
-          github-token: ${{ github.token }}
-      - name: Download No Model Update Installer
-        uses: actions/download-artifact@v4
-        with:
-          name: Chords-Windows-nomodel-Update
           path: release
           run-id: ${{ inputs.release_from_run_id || github.run_id }}
           github-token: ${{ github.token }}
