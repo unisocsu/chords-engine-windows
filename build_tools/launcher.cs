@@ -86,10 +86,13 @@ static class Program {
             Environment.SetEnvironmentVariable("PATH", dir + ";" + Path.Combine(dir, "_internal") + ";" + oldPath);
             string launcherName = Path.GetFileNameWithoutExtension(self).ToLowerInvariant();
             string variant = launcherName.StartsWith("chords-") ? launcherName.Substring("chords-".Length) : "";
-            if (!string.IsNullOrEmpty(variant)) {
+            if (!string.IsNullOrEmpty(variant))
                 Environment.SetEnvironmentVariable("CHORDS_VARIANT", variant);
-                if (variant == "english") Environment.SetEnvironmentVariable("CHORDS_UI_LANG", "en");
-            }
+
+            // The UI is always English. The model language controls Whisper's transcription language.
+            // Fixed installers expose their model language through the bundled filename; the no-model
+            // installer exposes it through the selected model in Program Files.
+            Environment.SetEnvironmentVariable("CHORDS_UI_LANG", DetectModelLanguage(dir));
             var psi = new ProcessStartInfo(appPath) {
                 WorkingDirectory = dir,
                 UseShellExecute = false
@@ -107,6 +110,17 @@ static class Program {
             MessageBox.Show(msg, "אקורדים");
             return 1;
         }
+    }
+
+    static string DetectModelLanguage(string dir) {
+        string modelDir = Path.Combine(dir, "vendor", "models");
+        if (!Directory.Exists(modelDir)) return "he";
+        string[] models = Directory.GetFiles(modelDir, "*.bin");
+        foreach (string model in models) {
+            string name = Path.GetFileName(model).ToLowerInvariant();
+            if (name.Contains(".en-")) return "en";
+        }
+        return "he";
     }
 
     static void SyncExternalModels(string self, string dir) {
