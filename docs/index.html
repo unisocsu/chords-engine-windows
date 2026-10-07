@@ -3,91 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="ChordsEngine Windows — ניתוח שירים, מילות שירים ואקורדים לגיטרה ב-Windows, בעיבוד מקומי עם whisper.cpp.">
-<meta name="keywords" content="ChordsEngine, guitar chords, song lyrics, Windows, whisper.cpp, chord detection, transcription, אקורדים, מילות שירים">
-<meta name="theme-color" content="#080b14">
+<meta name="description" content="ChordsEngine Windows — ניתוח שירים, תמלול מילים, זיהוי אקורדים, סולם וקצב. תוכנת Windows מקומית המבוססת על whisper.cpp.">
+<meta name="keywords" content="ChordsEngine, guitar chords, song lyrics, Windows, whisper.cpp, chord detection, transcription, אקורדים, מילות שירים, ניתוח שירים">
+<meta name="theme-color" content="#070912">
+<meta property="og:title" content="ChordsEngine Windows — Turn songs into chord sheets">
+<meta property="og:description" content="Local Windows song analysis with lyrics transcription, guitar chords, key, tempo and more.">
+<meta property="og:type" content="website">
 <link rel="icon" href="../icon.jpg" type="image/jpeg">
-<link rel="shortcut icon" href="../icon.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="../icon.jpg">
 <link rel="manifest" href="site.webmanifest">
 <title>ChordsEngine Windows — מילים ואקורדים מהשיר</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<div class="noise"></div>
 <header class="nav">
-<a class="brand" href="#"><span class="brand-mark">♫</span><span>ChordsEngine</span></a>
-<nav><a href="#features">יכולות</a><a href="#editions">מהדורות</a><a href="#about">אודות</a><a class="github-link" href="https://github.com/unisocsu/chords-engine-windows" target="_blank" rel="noopener">GitHub ↗</a></nav>
+  <a class="brand" href="#"><span class="logo">♫</span><span>Chords<span>Engine</span></span></a>
+  <nav>
+    <a href="#features">יכולות</a><a href="#workflow">איך זה עובד</a><a href="#editions">מהדורות</a><a href="#about">אודות</a>
+    <a class="nav-cta" href="https://github.com/unisocsu/chords-engine-windows/releases" target="_blank" rel="noopener">הורדות ↗</a>
+  </nav>
 </header>
 
 <main>
 <section class="hero">
-<div class="hero-copy">
-<div class="eyebrow">WINDOWS · OFFLINE · WHISPER.CPP</div>
-<h1>מהשיר שלך<br><span>לדף אקורדים.</span></h1>
-<p class="lead">ChordsEngine Windows מנתחת קובצי שמע ומפיקה מילים ואקורדים, יחד עם מידע מוזיקלי שימושי — בעיבוד מקומי על המחשב.</p>
-<div class="actions">
-<a class="button primary" href="https://github.com/unisocsu/chords-engine-windows/releases" target="_blank" rel="noopener">הורדת התוכנה</a>
-<a class="button secondary" href="https://github.com/unisocsu/chords-engine-windows" target="_blank" rel="noopener">פתיחת הפרויקט ב-GitHub</a>
-</div>
-<div class="trust"><span>✓ Windows EXE</span><span>✓ עיבוד מקומי</span><span>✓ 5 מהדורות</span></div>
-</div>
-<div class="hero-card">
-<div class="window-top"><span></span><span></span><span></span><em>ChordsEngine</em></div>
-<div class="screen">
-<div class="screen-head"><b>Song Analysis</b><span>96 BPM · Key G</span></div>
-<div class="timeline"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-<div class="lyrics"><div><b>G</b> &nbsp; מילים של השיר מסודרות כאן</div><div><b>D</b> &nbsp; והאקורדים מיושרים לפי זמן הנגינה</div><div><b>Em</b> &nbsp; כדי שיהיה קל יותר לנגן</div><div><b>C</b> &nbsp; ולראות את מבנה השיר</div></div>
-<div class="screen-foot"><span>● Processing complete</span><span>Offline</span></div>
-</div>
-</div>
+  <div class="hero-copy">
+    <div class="eyebrow"><i></i> WINDOWS · LOCAL AUDIO · WHISPER.CPP</div>
+    <h1>מהשיר שלך<br><em>לדף אקורדים.</em></h1>
+    <p class="lead">ChordsEngine מנתחת קובצי שמע ווידאו ומפיקה מילים, אקורדים ומידע מוזיקלי שימושי — בעיבוד מקומי על מחשב Windows.</p>
+    <div class="actions">
+      <a class="button primary" href="https://github.com/unisocsu/chords-engine-windows/releases" target="_blank" rel="noopener">⬇ הורדת ChordsEngine</a>
+      <a class="button ghost" href="https://github.com/unisocsu/chords-engine-windows" target="_blank" rel="noopener">צפייה בקוד ↗</a>
+    </div>
+    <div class="micro"><span>✓ Windows EXE</span><span>✓ ללא Python בהתקנה</span><span>✓ עיבוד מקומי</span></div>
+  </div>
+  <div class="product">
+    <div class="windowbar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><b>ChordsEngine</b><small>Song analysis</small></div>
+    <div class="product-body">
+      <div class="songline"><div class="cover">♫</div><div><strong>Song Analysis</strong><span>96 BPM · Key G · 04:12</span></div><label>READY</label></div>
+      <div class="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="chord-sheet">
+        <div><b>G</b><span>מילים של השיר מסודרות כאן</span></div>
+        <div><b>D</b><span>והאקורדים מיושרים לפי זמן הנגינה</span></div>
+        <div><b>Em</b><span>כדי שיהיה קל יותר לראות ולנגן</span></div>
+        <div><b>C</b><span>את מבנה השיר לאורך הזמן</span></div>
+      </div>
+      <div class="status"><span><i></i> Analysis complete</span><span>Local processing</span></div>
+    </div>
+  </div>
 </section>
 
-<section class="stats-strip"><div><strong>5</strong><span>מהדורות בכל Build</span></div><div><strong>4</strong><span>מודלים משולבים</span></div><div><strong>1</strong><span>מהדורה ללא מודל</span></div><div><strong>100%</strong><span>מקומי לאחר ההתקנה</span></div></section>
-
-
-<section id="latest" class="section release-notes">
-<div class="section-heading"><div class="eyebrow">LATEST RELEASE · v0.2.0</div><h2>מה חדש בגרסה האחרונה?</h2><p>v0.2.0 מביאה שדרוגים משמעותיים לניתוח, YouTube, התקנה ועדכון.</p></div>
-<div class="grid">
-<article><div class="icon">🎵</div><h3>ניתוח שירים משופר</h3><p>תמלול Whisper, זיהוי אקורדים, BPM וסולם, יישור מילים ואקורדים, והצגת התקדמות הניתוח בזמן אמת.</p></article>
-<article><div class="icon">▶️</div><h3>YouTube + Google</h3><p>חיפוש Google מתוך התוכנה, הורדת אודיו מ־YouTube באמצעות yt-dlp וניתוח אוטומטי של הקובץ שהורד.</p></article>
-<article><div class="icon">📊</div><h3>התקדמות בשורת המשימות</h3><p>בזמן ניתוח שיר מופיע פס התקדמות אמיתי על אייקון התוכנה בשורת המשימות של Windows.</p></article>
-<article><div class="icon">📦</div><h3>5 מהדורות</h3><p>Tiny, Base, Small, Medium ו־No Model, עם בחירת מודל והורדה בזמן ההתקנה לפי הצורך.</p></article>
-<article><div class="icon">🔄</div><h3>עדכון חכם</h3><p>מנגנון עדכון מובנה ששומר על מודל Whisper שכבר קיים במחשב ומאפשר עדכונים קטנים ומהירים יותר.</p></article>
-<article><div class="icon">🛠️</div><h3>יציבות ואריזה</h3><p>שיפורי PyInstaller, אריזת FFmpeg, שיפור yt-dlp וטיפול טוב יותר בתעודות HTTPS של Windows.</p></article>
-</div>
+<section class="numbers">
+  <div><strong>5</strong><span>מהדורות Windows</span></div>
+  <div><strong>4</strong><span>מודלים משולבים</span></div>
+  <div><strong>600+</strong><span>אקורדים במילון המלא</span></div>
+  <div><strong>100%</strong><span>מקומי לאחר ההתקנה*</span></div>
 </section>
 
 <section id="features" class="section">
-<div class="section-heading"><div class="eyebrow">CAPABILITIES</div><h2>כלים שנבנו סביב השיר</h2><p>מניתוח האודיו ועד תוצאה שאפשר לעבוד איתה.</p></div>
-<div class="grid">
-<article><div class="icon">🎸</div><h3>זיהוי אקורדים</h3><p>ניתוח אודיו וזיהוי אקורדים לאורך השיר.</p></article>
-<article><div class="icon">✍️</div><h3>תמלול מילים</h3><p>Whisper מספק תמלול עם זמני מילים לצורך יישור.</p></article>
-<article><div class="icon">🎼</div><h3>סולם וקצב</h3><p>מידע על Key, BPM ומבנה מוזיקלי.</p></article>
-<article><div class="icon">↕</div><h3>טרנספוזיציה</h3><p>שינוי סולם כדי להתאים את השיר לנגינה.</p></article>
-<article><div class="icon">▣</div><h3>ספרייה מקומית</h3><p>השירים והניתוחים נשמרים במחשב שלך.</p></article>
-<article><div class="icon">⊞</div><h3>Windows EXE</h3><p>מתקינים מוכנים לשימוש ללא צורך ב-Python.</p></article>
-</div>
+  <div class="section-head"><div><div class="eyebrow">CAPABILITIES</div><h2>לא רק תמלול.<br><span>מפת השיר כולה.</span></h2></div><p>המנוע מחבר בין אודיו, תמלול ותיאוריה מוזיקלית כדי ליצור תוצאה שאפשר באמת לנגן איתה.</p></div>
+  <div class="feature-grid">
+    <article class="feature big"><div class="feature-icon">♬</div><h3>מילים + אקורדים</h3><p>תמלול Whisper עם זמני מילים, זיהוי אקורדים ויישור שלהם לאורך השיר.</p><div class="mini-sheet"><b>Am</b> &nbsp; <span>Somewhere in the song</span><br><b>F</b> &nbsp;&nbsp; <span>the next line appears here</span></div></article>
+    <article class="feature"><div class="feature-icon">♯</div><h3>סולם וטרנספוזיציה</h3><p>זיהוי Key ויכולת להציג את האקורדים בסולם אחר בלי לשנות את השיר המקורי.</p></article>
+    <article class="feature"><div class="feature-icon">◴</div><h3>BPM ופעמות</h3><p>מידע על קצב, פעמות ומבנה מוזיקלי שמגיע מתוך ניתוח האודיו.</p></article>
+    <article class="feature"><div class="feature-icon">♧</div><h3>קאפו ואצבועים</h3><p>הצעות קאפו ואצבועי גיטרה ופסנתר כדי להפוך את התוצאה לשימושית לנגינה.</p></article>
+    <article class="feature"><div class="feature-icon">✎</div><h3>עריכה ידנית</h3><p>הזיהוי אינו סוף הדרך — ניתן לתקן ולערוך את התוצאה ידנית.</p></article>
+    <article class="feature"><div class="feature-icon">▦</div><h3>ספרייה מקומית</h3><p>שירים שנותחו נשמרים בספרייה המקומית, עם חיפוש, מיון ופתיחה מחדש.</p></article>
+    <article class="feature"><div class="feature-icon">▶</div><h3>ייבוא YouTube</h3><p>כלי YouTube מבוסס yt-dlp יכול להוריד אודיו ולהעביר אותו אוטומטית לניתוח.</p></article>
+    <article class="feature"><div class="feature-icon">⌁</div><h3>עבודה רציפה</h3><p>תור עבודות, התקדמות ניתוח ופס התקדמות בשורת המשימות של Windows.</p></article>
+  </div>
+</section>
+
+<section id="workflow" class="section workflow">
+  <div class="section-head centered"><div class="eyebrow">FROM AUDIO TO CHORDS</div><h2>שלושה שלבים. תוצאה אחת.</h2><p>המערכת בנויה כ-pipeline מקומי שמחבר את כל חלקי הניתוח.</p></div>
+  <div class="steps">
+    <div class="step"><span>01</span><h3>בחר שיר</h3><p>MP3, WAV, FLAC, M4A, OGG, OPUS וגם קובצי וידאו נתמכים.</p></div>
+    <div class="connector">→</div>
+    <div class="step"><span>02</span><h3>המנוע מנתח</h3><p>Whisper לתמלול, מנוע אקורדים לניתוח הרמוני ו-librosa לקצב ופעמות.</p></div>
+    <div class="connector">→</div>
+    <div class="step"><span>03</span><h3>נגן וערוך</h3><p>קבל דף מילים ואקורדים, תקן את התוצאה וטרנספז לפי הצורך.</p></div>
+  </div>
+  <div class="stack"><span>whisper.cpp</span><b>×</b><span>lv-chordia</span><b>×</b><span>librosa</span><b>×</b><span>PyAV / FFmpeg</span><b>×</b><span>WebView2</span></div>
 </section>
 
 <section id="editions" class="section editions">
-<div class="section-heading"><div class="eyebrow">EDITIONS</div><h2>מהדורה שמתאימה למחשב שלך</h2><p>ארבע מהדורות עם מודל Whisper משולב, ועוד מהדורה שבה אתה מספק את המודל.</p></div>
-<div class="edition-grid">
-<div class="edition"><div class="edition-number">01</div><strong>Tiny</strong><span>מודל כלול</span><small>הורדה קטנה ומהירה יותר</small></div>
-<div class="edition"><div class="edition-number">02</div><strong>Base</strong><span>מודל כלול</span><small>איזון בין גודל ליכולת</small></div>
-<div class="edition"><div class="edition-number">03</div><strong>Small</strong><span>מודל כלול</span><small>מודל גדול יותר לניתוח</small></div>
-<div class="edition featured"><div class="edition-number">04</div><strong>Medium</strong><span>מודל כלול</span><small>המהדורה המתקדמת</small></div>
-<div class="edition"><div class="edition-number">05</div><strong>No Model</strong><span>ללא מודל</span><small>בחירת מודל בזמן ההתקנה</small></div>
-</div>
+  <div class="section-head"><div><div class="eyebrow">WINDOWS EDITIONS</div><h2>בחר את המודל.<br><span>לא את כל החבילה.</span></h2></div><p>ארבע מהדורות כוללות מודל Whisper, ומהדורת No Model מיועדת למי שכבר מחזיק מודל מתאים.</p></div>
+  <div class="edition-grid">
+    <article><small>01</small><h3>Tiny</h3><b>מודל כלול</b><p>הורדה קטנה ומהירה יותר.</p></article>
+    <article><small>02</small><h3>Base</h3><b>מודל כלול</b><p>אפשרות קלה לשימוש.</p></article>
+    <article><small>03</small><h3>Small</h3><b>מודל כלול</b><p>איזון בין גודל לאיכות.</p></article>
+    <article class="featured"><small>04 · RECOMMENDED</small><h3>Medium</h3><b>מודל כלול</b><p>המהדורה עם איכות תמלול גבוהה יותר.</p></article>
+    <article><small>05</small><h3>No Model</h3><b>ללא מודל</b><p>בחירת מודל קיים בזמן ההתקנה.</p></article>
+  </div>
+  <p class="note">כל המהדורות הארוזות מגיעות כ-Windows EXE ואינן דורשות התקנת Python במחשב המשתמש.</p>
 </section>
 
 <section id="about" class="section about">
-<div><div class="eyebrow">ABOUT THE PROJECT</div><h2>קוד פתוח. פיתוח מתמשך.</h2><p>ChordsEngine Windows הוא fork והמשך פיתוח של מנוע האקורדים והמילים המקורי שנבנה באמצעות Claude Code על ידי <a href="https://github.com/tsoolgee" target="_blank" rel="noopener">@tsoolgee</a>.</p><p>הפרויקט כולל אריזת Windows, מתקינים, מהדורות עם מודלים משולבים ו-builds אוטומטיים באמצעות GitHub Actions.</p></div>
-<div class="tech"><span>Python</span><span>whisper.cpp</span><span>lv-chordia</span><span>librosa</span><span>PyAV</span><span>WebView2</span><span>GitHub Actions</span></div>
+  <div class="about-copy"><div class="eyebrow">OPEN SOURCE PROJECT</div><h2>קוד פתוח.<br><span>פיתוח מתמשך.</span></h2><p>ChordsEngine Windows הוא fork והמשך פיתוח של מנוע האקורדים והמילים המקורי שנבנה באמצעות Claude Code על ידי <a href="https://github.com/tsoolgee" target="_blank" rel="noopener">@tsoolgee</a>.</p><p>הריפו כולל את מנוע הניתוח, ממשק Windows, אריזה ל-EXE, מתקינים, מודלי Whisper, בדיקות ו-GitHub Actions לבנייה אוטומטית.</p><div class="tags"><span>Python</span><span>whisper.cpp</span><span>lv-chordia</span><span>librosa</span><span>PyAV</span><span>FFmpeg</span><span>WebView2</span><span>GitHub Actions</span></div></div>
+  <div class="code-card"><div><span>PROJECT STACK</span><i>●</i></div><pre><code>audio
+  ├─ transcription
+  ├─ chord analysis
+  ├─ musical theory
+  └─ rendering
+
+windows
+  ├─ WebView2
+  ├─ EXE packaging
+  └─ installers</code></pre></div>
 </section>
 
-<section class="cta"><div class="cta-glow"></div><div class="eyebrow">GET STARTED</div><h2>השיר הבא מחכה לניתוח.</h2><p>הורדות, קוד, Releases והמשך הפיתוח — במקום אחד.</p><div class="actions"><a class="button primary" href="https://github.com/unisocsu/chords-engine-windows/releases" target="_blank" rel="noopener">לכל ההורדות ↗</a><a class="button secondary" href="https://github.com/unisocsu/chords-engine-windows" target="_blank" rel="noopener">GitHub ↗</a></div></section>
+<section class="cta">
+  <div class="eyebrow">READY TO PLAY?</div>
+  <h2>תן לשיר שלך<br><span>להפוך לאקורדים.</span></h2>
+  <p>הורדות, Releases, קוד מקור והמשך הפיתוח — במקום אחד.</p>
+  <div class="actions"><a class="button primary" href="https://github.com/unisocsu/chords-engine-windows/releases" target="_blank" rel="noopener">⬇ לכל ההורדות</a><a class="button ghost" href="https://github.com/unisocsu/chords-engine-windows" target="_blank" rel="noopener">GitHub ↗</a></div>
+</section>
 </main>
 
-<footer><span>© ChordsEngine Windows</span><span>Built with whisper.cpp · Open Source</span></footer>
+<footer><span>© ChordsEngine Windows</span><span>Built with whisper.cpp · Open Source</span><span><a href="https://github.com/unisocsu/chords-engine-windows">Source ↗</a></span></footer>
 </body>
 </html>
